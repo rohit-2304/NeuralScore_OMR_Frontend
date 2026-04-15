@@ -1,5 +1,6 @@
 "use client";
 
+import { LucideIcon } from 'lucide-react'; // Or your specific icon library
 import React, { useState, useRef } from "react";
 import { UploadCloud, CheckCircle2, XCircle, ListVideo, BrainCircuit, RefreshCw, BarChart, Percent, LayoutList, ScanLine, FileJson } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -68,7 +69,7 @@ export default function Home() {
 
     setIsProcessing(true);
     setError(null);
-    
+
     // Create FormData
     const formData = new FormData();
     formData.append("file", file);
@@ -89,8 +90,7 @@ export default function Home() {
 
       const data: APIResponse = await res.json();
       setResult(data);
-    } catch (err: any) {
-      setError(err.message || "An error occurred during processing.");
+    } catch (err) {
     } finally {
       setIsProcessing(false);
     }
@@ -105,7 +105,18 @@ export default function Home() {
   };
 
   // --- Components ---
-  const StatCard = ({ icon: Icon, label, value, colorClass }: { icon: any, label: string, value: string | number, colorClass: string }) => (
+
+  const StatCard = ({
+    icon: Icon,
+    label,
+    value,
+    colorClass
+  }: {
+    icon: LucideIcon, // Change 'image' to 'LucideIcon' or 'React.ElementType'
+    label: string,
+    value: string | number,
+    colorClass: string
+  }) => (
     <div className="flex items-center p-4 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-sm">
       <div className={`p-3 rounded-xl mr-4 ${colorClass} bg-opacity-20 flex-shrink-0`}>
         <Icon className={`w-6 h-6 ${colorClass.replace('bg-', 'text-')}`} />
@@ -130,7 +141,7 @@ export default function Home() {
           </h1>
         </div>
         {result && (
-          <button 
+          <button
             onClick={resetState}
             className="flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-white/5"
           >
@@ -142,7 +153,7 @@ export default function Home() {
       <AnimatePresence mode="wait">
         {!result ? (
           /* ================= UPLOAD ZONE ================= */
-          <motion.div 
+          <motion.div
             key="upload"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -159,7 +170,7 @@ export default function Home() {
               </p>
             </div>
 
-            <div 
+            <div
               className={`w-full relative group transition-all duration-300 ease-out 
                 ${isHovering ? 'scale-[1.02]' : 'scale-100'}`}
               onDragOver={(e) => { e.preventDefault(); setIsHovering(true); }}
@@ -170,17 +181,17 @@ export default function Home() {
               {/* Glowing animated border effect */}
               <div className={`absolute inset-0 rounded-3xl bg-gradient-to-r transition-opacity duration-300 blur-xl
                 ${isHovering ? 'from-indigo-500/40 to-purple-500/40 opacity-100' : 'from-indigo-500/10 to-purple-500/10 opacity-50'}
-                ${file ? 'opacity-0' : ''}`} 
+                ${file ? 'opacity-0' : ''}`}
               />
-              
+
               <div className={`relative w-full overflow-hidden rounded-3xl bg-[#0F1117]/80 backdrop-blur-xl border-2 border-dashed flex flex-col items-center
                 ${isHovering ? 'border-primary' : 'border-white/10'} 
                 ${file ? 'border-solid border-white/10 p-4' : 'cursor-pointer p-16'}`}>
-                
-                <input 
-                  type="file" 
-                  accept="image/png, image/jpeg" 
-                  className="hidden" 
+
+                <input
+                  type="file"
+                  accept="image/png, image/jpeg"
+                  className="hidden"
                   ref={fileInputRef}
                   onChange={(e) => {
                     if (e.target.files && e.target.files.length > 0) {
@@ -204,63 +215,63 @@ export default function Home() {
                   <div className="w-full">
                     {previewUrl && (
                       <div className="relative rounded-xl overflow-hidden aspect-[4/3] bg-black/50 mb-6 flex items-center justify-center">
-                         <img src={previewUrl} alt="Preview" className="max-h-full max-w-full object-contain" />
+                        <img src={previewUrl} alt="Preview" className="max-h-full max-w-full object-contain" />
                       </div>
                     )}
                     <div className="flex items-center justify-between">
-                       <span className="text-sm font-medium text-gray-300 truncate max-w-[60%] pl-2">{file.name}</span>
-                       <div className="flex gap-3">
-                         <button 
-                           onClick={(e) => { e.stopPropagation(); resetState(); }}
-                           className="px-4 py-2 rounded-lg text-sm text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
-                           disabled={isProcessing}
-                         >
-                           Remove
-                         </button>
-                         <button 
-                           onClick={(e) => { e.stopPropagation(); handleUpload(); }}
-                           disabled={isProcessing}
-                           className="flex items-center gap-2 px-6 py-2 rounded-lg bg-primary text-white font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_20px_rgba(59,130,246,0.3)]"
-                         >
-                           {isProcessing ? (
-                             <>
+                      <span className="text-sm font-medium text-gray-300 truncate max-w-[60%] pl-2">{file.name}</span>
+                      <div className="flex gap-3">
+                        <button
+                          onClick={(e) => { e.stopPropagation(); resetState(); }}
+                          className="px-4 py-2 rounded-lg text-sm text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+                          disabled={isProcessing}
+                        >
+                          Remove
+                        </button>
+                        <button
+                          onClick={(e) => { e.stopPropagation(); handleUpload(); }}
+                          disabled={isProcessing}
+                          className="flex items-center gap-2 px-6 py-2 rounded-lg bg-primary text-white font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_20px_rgba(59,130,246,0.3)]"
+                        >
+                          {isProcessing ? (
+                            <>
                               <RefreshCw className="w-4 h-4 animate-spin" /> Scanning...
-                             </>
-                           ) : (
-                             <>
-                               <ScanLine className="w-4 h-4" /> Process Image
-                             </>
-                           )}
-                         </button>
-                       </div>
+                            </>
+                          ) : (
+                            <>
+                              <ScanLine className="w-4 h-4" /> Process Image
+                            </>
+                          )}
+                        </button>
+                      </div>
                     </div>
                   </div>
                 )}
               </div>
             </div>
-            
+
             {/* Optional Answer Key Upload */}
             <div className={`w-full max-w-sm mx-auto mt-6 transition-all duration-300 ${file && !isProcessing ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}>
-               <input 
-                  type="file" 
-                  accept="application/json" 
-                  className="hidden" 
-                  ref={answerKeyInputRef}
-                  onChange={(e) => {
-                    if (e.target.files && e.target.files.length > 0) {
-                      setAnswerKeyFile(e.target.files[0]);
-                    }
-                  }}
-                />
-               <button 
-                  onClick={() => answerKeyInputRef.current?.click()}
-                  className="w-full py-3 px-4 rounded-xl border border-dashed border-white/20 bg-white/5 hover:bg-white/10 transition-colors flex items-center justify-center gap-2 text-sm text-gray-300"
-               >
-                 <FileJson className="w-4 h-4 text-primary" />
-                 {answerKeyFile ? answerKeyFile.name : "Upload Custom Answer Key (.json) (Optional)"}
-               </button>
+              <input
+                type="file"
+                accept="application/json"
+                className="hidden"
+                ref={answerKeyInputRef}
+                onChange={(e) => {
+                  if (e.target.files && e.target.files.length > 0) {
+                    setAnswerKeyFile(e.target.files[0]);
+                  }
+                }}
+              />
+              <button
+                onClick={() => answerKeyInputRef.current?.click()}
+                className="w-full py-3 px-4 rounded-xl border border-dashed border-white/20 bg-white/5 hover:bg-white/10 transition-colors flex items-center justify-center gap-2 text-sm text-gray-300"
+              >
+                <FileJson className="w-4 h-4 text-primary" />
+                {answerKeyFile ? answerKeyFile.name : "Upload Custom Answer Key (.json) (Optional)"}
+              </button>
             </div>
-            
+
             {error && (
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm w-full text-center">
                 {error}
@@ -270,7 +281,7 @@ export default function Home() {
           </motion.div>
         ) : (
           /* ================= RESULTS DASHBOARD ================= */
-          <motion.div 
+          <motion.div
             key="results"
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -278,102 +289,102 @@ export default function Home() {
             className="flex-1 w-full flex flex-col"
           >
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-              
+
               {/* Left Column: Image Viewer */}
               <div className="lg:col-span-5 flex flex-col">
-                 <div className="bg-white/5 border border-white/10 rounded-3xl overflow-hidden backdrop-blur-sm p-2 shadow-2xl relative group">
-                    <div className="absolute top-4 left-4 z-10 p-2 px-3 bg-black/60 rounded-lg backdrop-blur-md border border-white/10 text-xs font-medium text-white flex items-center gap-2">
-                       <LayoutList className="w-3.5 h-3.5 text-primary" /> Visual Detection Space
-                    </div>
-                    <div className="relative rounded-2xl overflow-hidden bg-[#0A0C10] flex items-center justify-center min-h-[400px]">
-                       <img 
-                         src={result.annotated_image} 
-                         alt="Parsed OMR Sheet" 
-                         className="w-full rounded-xl"
-                       />
-                    </div>
-                 </div>
+                <div className="bg-white/5 border border-white/10 rounded-3xl overflow-hidden backdrop-blur-sm p-2 shadow-2xl relative group">
+                  <div className="absolute top-4 left-4 z-10 p-2 px-3 bg-black/60 rounded-lg backdrop-blur-md border border-white/10 text-xs font-medium text-white flex items-center gap-2">
+                    <LayoutList className="w-3.5 h-3.5 text-primary" /> Visual Detection Space
+                  </div>
+                  <div className="relative rounded-2xl overflow-hidden bg-[#0A0C10] flex items-center justify-center min-h-[400px]">
+                    <img
+                      src={result.annotated_image}
+                      alt="Parsed OMR Sheet"
+                      className="w-full rounded-xl"
+                    />
+                  </div>
+                </div>
               </div>
 
               {/* Right Column: Statistics & Flow */}
               <div className="lg:col-span-7 flex flex-col gap-6">
-                 
-                 {/* Top Level Stats */}
-                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <StatCard icon={BarChart} label="Total Score" value={`${result.metadata.score} / ${result.metadata.total_questions}`} colorClass="text-blue-400 bg-blue-500" />
-                    <StatCard icon={Percent} label="Accuracy" value={`${result.metadata.percentage}%`} colorClass={result.metadata.percentage >= 50 ? 'text-green-400 bg-green-500' : 'text-orange-400 bg-orange-500'} />
-                    <StatCard icon={CheckCircle2} label="Correct" value={result.metadata.correct} colorClass="text-emerald-400 bg-emerald-500" />
-                    <StatCard icon={XCircle} label="Wrong" value={result.metadata.wrong} colorClass="text-rose-400 bg-rose-500" />
-                 </div>
 
-                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                     <div className="bg-white/5 border border-white/10 rounded-2xl p-5 backdrop-blur-sm flex items-center justify-between">
-                        <div>
-                           <div className="text-sm font-medium text-gray-400 mb-1">Answers Parsed</div>
-                           <div className="text-xl font-bold text-gray-200">{result.metadata.answered} of {result.metadata.total_questions}</div>
-                        </div>
-                        <div className="w-12 h-12 rounded-full border-4 border-primary/30 flex items-center justify-center">
-                           <span className="text-xs font-bold text-primary">{Math.round((result.metadata.answered/result.metadata.total_questions)*100)}%</span>
-                        </div>
-                     </div>
-                     <div className="bg-white/5 border border-white/10 rounded-2xl p-5 backdrop-blur-sm flex items-center justify-between">
-                        <div className="flex flex-col">
-                           <span className="text-sm font-medium text-gray-400 flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-gray-500"></div> Blank Answers: {result.metadata.blank}</span>
-                           <span className="text-sm font-medium text-gray-400 mt-2 flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-orange-500"></div> Multi-Marked: {result.metadata.multi_marked}</span>
-                        </div>
-                     </div>
-                 </div>
+                {/* Top Level Stats */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <StatCard icon={BarChart} label="Total Score" value={`${result.metadata.score} / ${result.metadata.total_questions}`} colorClass="text-blue-400 bg-blue-500" />
+                  <StatCard icon={Percent} label="Accuracy" value={`${result.metadata.percentage}%`} colorClass={result.metadata.percentage >= 50 ? 'text-green-400 bg-green-500' : 'text-orange-400 bg-orange-500'} />
+                  <StatCard icon={CheckCircle2} label="Correct" value={result.metadata.correct} colorClass="text-emerald-400 bg-emerald-500" />
+                  <StatCard icon={XCircle} label="Wrong" value={result.metadata.wrong} colorClass="text-rose-400 bg-rose-500" />
+                </div>
 
-                 {/* Detailed Table */}
-                 <div className="bg-white/5 border border-white/10 rounded-3xl flex-1 backdrop-blur-sm overflow-hidden flex flex-col max-h-[600px]">
-                    <div className="p-5 border-b border-white/10 bg-white/[0.02]">
-                       <h3 className="font-semibold text-white flex items-center gap-2">
-                         <ListVideo className="w-5 h-5 text-gray-400" /> Detailed Breakdown
-                       </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-white/5 border border-white/10 rounded-2xl p-5 backdrop-blur-sm flex items-center justify-between">
+                    <div>
+                      <div className="text-sm font-medium text-gray-400 mb-1">Answers Parsed</div>
+                      <div className="text-xl font-bold text-gray-200">{result.metadata.answered} of {result.metadata.total_questions}</div>
                     </div>
-                    <div className="overflow-auto p-0 flex-1">
-                       <table className="w-full text-left border-collapse">
-                          <thead className="sticky top-0 bg-[#161A23] z-10 shadow-md">
-                             <tr>
-                               <th className="p-4 text-xs font-medium text-gray-400 uppercase tracking-wider">Q#</th>
-                               <th className="p-4 text-xs font-medium text-gray-400 uppercase tracking-wider">Detected</th>
-                               <th className="p-4 text-xs font-medium text-gray-400 uppercase tracking-wider">Expected</th>
-                               <th className="p-4 text-xs font-medium text-gray-400 uppercase tracking-wider">Conf.</th>
-                               <th className="p-4 text-xs font-medium text-gray-400 uppercase tracking-wider">Status</th>
-                             </tr>
-                          </thead>
-                          <tbody className="divide-y divide-white/5 text-sm">
-                             {result.questions.map((q) => (
-                               <tr key={q.q} className="hover:bg-white/[0.02] transition-colors">
-                                 <td className="p-4 font-medium text-gray-300 w-16">Q{q.q}</td>
-                                 <td className="p-4">
-                                     <span className={`px-2.5 py-1 rounded-md font-bold text-xs ${q.detected ? 'bg-white/10 text-white' : 'bg-transparent text-gray-500'}`}>
-                                       {q.detected || '-'}
-                                     </span>
-                                 </td>
-                                 <td className="p-4 text-gray-400 font-medium">
-                                     {q.correct || '-'}
-                                 </td>
-                                 <td className="p-4 text-gray-500 font-mono text-xs">
-                                     {(q.confidence * 100).toFixed(1)}%
-                                 </td>
-                                 <td className="p-4">
-                                    {q.status === 'blank' ? (
-                                      <span className="text-gray-500 flex items-center gap-1.5"><div className="w-1.5 h-1.5 rounded-full bg-gray-500" /> Blank</span>
-                                    ) : q.status === 'multi-marked' ? (
-                                      <span className="text-orange-400 flex items-center gap-1.5"><div className="w-1.5 h-1.5 rounded-full bg-orange-400" /> Multimark</span>
-                                    ) : q.is_correct ? (
-                                      <span className="text-emerald-400 flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" /> Correct</span>
-                                    ) : (
-                                      <span className="text-rose-400 flex items-center gap-1.5"><XCircle className="w-4 h-4" /> Incorrect</span>
-                                    )}
-                                 </td>
-                               </tr>
-                             ))}
-                          </tbody>
-                       </table>
+                    <div className="w-12 h-12 rounded-full border-4 border-primary/30 flex items-center justify-center">
+                      <span className="text-xs font-bold text-primary">{Math.round((result.metadata.answered / result.metadata.total_questions) * 100)}%</span>
                     </div>
-                 </div>
+                  </div>
+                  <div className="bg-white/5 border border-white/10 rounded-2xl p-5 backdrop-blur-sm flex items-center justify-between">
+                    <div className="flex flex-col">
+                      <span className="text-sm font-medium text-gray-400 flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-gray-500"></div> Blank Answers: {result.metadata.blank}</span>
+                      <span className="text-sm font-medium text-gray-400 mt-2 flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-orange-500"></div> Multi-Marked: {result.metadata.multi_marked}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Detailed Table */}
+                <div className="bg-white/5 border border-white/10 rounded-3xl flex-1 backdrop-blur-sm overflow-hidden flex flex-col max-h-[600px]">
+                  <div className="p-5 border-b border-white/10 bg-white/[0.02]">
+                    <h3 className="font-semibold text-white flex items-center gap-2">
+                      <ListVideo className="w-5 h-5 text-gray-400" /> Detailed Breakdown
+                    </h3>
+                  </div>
+                  <div className="overflow-auto p-0 flex-1">
+                    <table className="w-full text-left border-collapse">
+                      <thead className="sticky top-0 bg-[#161A23] z-10 shadow-md">
+                        <tr>
+                          <th className="p-4 text-xs font-medium text-gray-400 uppercase tracking-wider">Q#</th>
+                          <th className="p-4 text-xs font-medium text-gray-400 uppercase tracking-wider">Detected</th>
+                          <th className="p-4 text-xs font-medium text-gray-400 uppercase tracking-wider">Expected</th>
+                          <th className="p-4 text-xs font-medium text-gray-400 uppercase tracking-wider">Conf.</th>
+                          <th className="p-4 text-xs font-medium text-gray-400 uppercase tracking-wider">Status</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-white/5 text-sm">
+                        {result.questions.map((q) => (
+                          <tr key={q.q} className="hover:bg-white/[0.02] transition-colors">
+                            <td className="p-4 font-medium text-gray-300 w-16">Q{q.q}</td>
+                            <td className="p-4">
+                              <span className={`px-2.5 py-1 rounded-md font-bold text-xs ${q.detected ? 'bg-white/10 text-white' : 'bg-transparent text-gray-500'}`}>
+                                {q.detected || '-'}
+                              </span>
+                            </td>
+                            <td className="p-4 text-gray-400 font-medium">
+                              {q.correct || '-'}
+                            </td>
+                            <td className="p-4 text-gray-500 font-mono text-xs">
+                              {(q.confidence * 100).toFixed(1)}%
+                            </td>
+                            <td className="p-4">
+                              {q.status === 'blank' ? (
+                                <span className="text-gray-500 flex items-center gap-1.5"><div className="w-1.5 h-1.5 rounded-full bg-gray-500" /> Blank</span>
+                              ) : q.status === 'multi-marked' ? (
+                                <span className="text-orange-400 flex items-center gap-1.5"><div className="w-1.5 h-1.5 rounded-full bg-orange-400" /> Multimark</span>
+                              ) : q.is_correct ? (
+                                <span className="text-emerald-400 flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" /> Correct</span>
+                              ) : (
+                                <span className="text-rose-400 flex items-center gap-1.5"><XCircle className="w-4 h-4" /> Incorrect</span>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
 
               </div>
             </div>
