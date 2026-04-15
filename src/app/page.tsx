@@ -91,6 +91,7 @@ export default function Home() {
       const data: APIResponse = await res.json();
       setResult(data);
     } catch (err) {
+      console.error(err);
     } finally {
       setIsProcessing(false);
     }
